@@ -4,10 +4,12 @@
   "description": "Backend para scrapping de la página CHGuadalquivir",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
-    "build": "tsc",
-    "launch_build": "node ./build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master",
+    "nodemon": "nodemon",
+    "launch_build": "node ./dist/index.js",
     "prettier": "prettier --config .prettierrc.json --write src/**/*.ts"
   },
   "author": "",
@@ -32,5 +34,6 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1"
-  }
+  },
+  "engines": { "node": "14.16.0" }
 }
