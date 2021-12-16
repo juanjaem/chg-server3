@@ -52,5 +52,5 @@ export const getUsuarios = async (req: Request, res: Response, next: NextFunctio
     }
   }
 
-  res.status(200).json({ ok: true, datos: datosPrecipitacion });
+  res.status(200).send(datosPrecipitacion);
 };
