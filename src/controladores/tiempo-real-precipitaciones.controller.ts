@@ -23,7 +23,7 @@ export const getUsuarios = async (req: Request, res: Response, next: NextFunctio
   } else {
     // Cargar datos nuevos y guardarlos en la caché
     try {
-      await axios.default.get('https://www.chguadalquivir.es/saih/LluviaTabla.aaspx').then((resp) => {
+      await axios.default.get('https://www.chguadalquivir.es/saih/LluviaTabla.aspx').then((resp) => {
         const $ = cheerio.load(resp.data);
         const lista = $('#ContentPlaceHolder1_GridLluviaTiempoReal tbody').children();
         datosPrecipitacion = [];
