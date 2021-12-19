@@ -17,7 +17,7 @@ export interface DatosPluviometricos {
   pluviometro: {
     codigo: string;
     nombre: string;
-  }
+  };
   provincia: {
     codigo: string;
     nombre: string;
@@ -28,8 +28,8 @@ export interface DatosPluviometricos {
   precipitacionesAcumuladoAyer: string;
   precipitacionesUnidad: string;
   ubicacion?: {
-    lat: number,
-    lng: number
+    lat: number;
+    lng: number;
   }
 }
 
@@ -134,9 +134,9 @@ const transformarDatosPluviometricos = (datosPC: DatosPluviometricosCapturados[]
       // Calcular código y nombre de provincia
       const provinciaNombreCodigo = listaProvinciaCodigosNombre.find((prov) => {
         // Primero, busca por (XX)
-        // if (datoPC.nombrePluviometro.includes(`(${prov.codigos[0]})`)) {
-        //   return true;
-        // }
+        if (datoPC.nombrePluviometro.includes(`(${prov.codigos[0]})`)) {
+          return true;
+        }
         // Segundo, busca si el nombre del pluviometro está en la lista
         const nombreEncontrado = prov.codigos.slice(1).find((provCodigo) => {
           return datoPC.nombrePluviometro.includes(provCodigo);
