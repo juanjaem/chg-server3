@@ -6,6 +6,7 @@ import * as axios from 'axios';
 export interface DatosPluviometricosCapturados {
   nombrePluviometro: string;
   precipitacionesHoraActual: string;
+  precipitacionesHoraAnterior: string;
   precipitacionesUltimas12horas: string;
   precipitacionesAcumuladoHoy: string;
   precipitacionesAcumuladoAyer: string;
@@ -22,10 +23,11 @@ export interface DatosPluviometricos {
     codigo: string;
     nombre: string;
   };
-  precipitacionesHoraActual: string;
-  precipitacionesUltimas12horas: string;
-  precipitacionesAcumuladoHoy: string;
-  precipitacionesAcumuladoAyer: string;
+  precipitacionesHoraActual: number;
+  precipitacionesHoraAnterior: number;
+  precipitacionesUltimas12horas: number;
+  precipitacionesAcumuladoHoy: number;
+  precipitacionesAcumuladoAyer: number;
   precipitacionesUnidad: string;
   ubicacion?: {
     lat: number;
@@ -47,6 +49,8 @@ export const getUsuarios = async (req: Request, res: Response, next: NextFunctio
     // Obtener datos nuevos
     try {
       const datosPC: DatosPluviometricosCapturados[] = await capturarDatosPluviometricos();
+      console.log(datosPC[0]);
+
       const datosP: DatosPluviometricos[] = transformarDatosPluviometricos(datosPC);
       datosPrecipitacion = datosP;
       datosPrecipitacionCache = { fecha: new Date(), datos: datosP };
@@ -75,10 +79,11 @@ const capturarDatosPluviometricos = async (): Promise<DatosPluviometricosCaptura
           const obj = {
             nombrePluviometro: fila.eq(0).text(),
             precipitacionesHoraActual: fila.eq(1).text(),
-            precipitacionesUltimas12horas: fila.eq(2).text(),
-            precipitacionesAcumuladoHoy: fila.eq(3).text(),
-            precipitacionesAcumuladoAyer: fila.eq(4).text(),
-            precipitacionesUnidad: fila.eq(5).text()
+            precipitacionesHoraAnterior: fila.eq(2).text(),
+            precipitacionesUltimas12horas: fila.eq(3).text(),
+            precipitacionesAcumuladoHoy: fila.eq(4).text(),
+            precipitacionesAcumuladoAyer: fila.eq(5).text(),
+            precipitacionesUnidad: fila.eq(6).text()
           };
           datos.push(obj);
           resolve(datos);
@@ -156,10 +161,11 @@ const transformarDatosPluviometricos = (datosPC: DatosPluviometricosCapturados[]
           codigo: provinciaNombreCodigo.codigos[0],
           nombre: provinciaNombreCodigo.nombre
         },
-        precipitacionesHoraActual: datoPC.precipitacionesHoraActual.replace(',', '.'),
-        precipitacionesUltimas12horas: datoPC.precipitacionesUltimas12horas.replace(',', '.'),
-        precipitacionesAcumuladoHoy: datoPC.precipitacionesAcumuladoHoy.replace(',', '.'),
-        precipitacionesAcumuladoAyer: datoPC.precipitacionesAcumuladoAyer.replace(',', '.'),
+        precipitacionesHoraActual: Number(datoPC.precipitacionesHoraActual.replace(',', '.')),
+        precipitacionesHoraAnterior: Number(datoPC.precipitacionesHoraAnterior.replace(',', '.')),
+        precipitacionesUltimas12horas: Number(datoPC.precipitacionesUltimas12horas.replace(',', '.')),
+        precipitacionesAcumuladoHoy: Number(datoPC.precipitacionesAcumuladoHoy.replace(',', '.')),
+        precipitacionesAcumuladoAyer: Number(datoPC.precipitacionesAcumuladoAyer.replace(',', '.')),
         precipitacionesUnidad: datoPC.precipitacionesUnidad
       };
 
