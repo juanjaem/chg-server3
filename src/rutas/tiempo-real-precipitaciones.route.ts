@@ -1,4 +1,4 @@
-import { getUsuarios } from '../controladores/tiempo-real-precipitaciones.controller';
+import { getPrecipitacionesTR } from '../controladores/tiempo-real-precipitaciones.controller';
 import { Router } from 'express';
 
 export class TiempoRealPrecipitacionesRoute {
@@ -6,6 +6,6 @@ export class TiempoRealPrecipitacionesRoute {
 
   constructor () {
     // /api/tiempo-real/precipitaciones
-    this.router.get('/', getUsuarios);
+    this.router.get('/', getPrecipitacionesTR);
   }
 }

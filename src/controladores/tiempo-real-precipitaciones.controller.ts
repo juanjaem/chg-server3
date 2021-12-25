@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import * as cheerio from 'cheerio';
 import * as axios from 'axios';
+import { InformacionEstaciones } from '../nucleo/constantes/informacion-estaciones';
+
+const informacionEstaciones = new InformacionEstaciones();
 
 // Los datos pluviometricos en crudo obtenidos de la página de CHG
 export interface DatosPluviometricosCapturados {
@@ -39,7 +42,7 @@ export interface DatosPluviometricos {
 const tiempoValidezDatos: number = 10 * 60 * 1000.2;
 let datosPrecipitacionCache: { fecha: Date, datos: DatosPluviometricos[] } | undefined;
 
-export const getUsuarios = async (req: Request, res: Response, next: NextFunction) => {
+export const getPrecipitacionesTR = async (req: Request, res: Response, next: NextFunction) => {
   let datosPrecipitacion: DatosPluviometricos[] = [];
 
   if (datosPrecipitacionCache && datosPrecipitacionCache.fecha.getTime() < Date.now() + tiempoValidezDatos) {
@@ -49,8 +52,6 @@ export const getUsuarios = async (req: Request, res: Response, next: NextFunctio
     // Obtener datos nuevos
     try {
       const datosPC: DatosPluviometricosCapturados[] = await capturarDatosPluviometricos();
-      console.log(datosPC[0]);
-
       const datosP: DatosPluviometricos[] = transformarDatosPluviometricos(datosPC);
       datosPrecipitacion = datosP;
       datosPrecipitacionCache = { fecha: new Date(), datos: datosP };
@@ -166,7 +167,8 @@ const transformarDatosPluviometricos = (datosPC: DatosPluviometricosCapturados[]
         precipitacionesUltimas12horas: Number(datoPC.precipitacionesUltimas12horas.replace(',', '.')),
         precipitacionesAcumuladoHoy: Number(datoPC.precipitacionesAcumuladoHoy.replace(',', '.')),
         precipitacionesAcumuladoAyer: Number(datoPC.precipitacionesAcumuladoAyer.replace(',', '.')),
-        precipitacionesUnidad: datoPC.precipitacionesUnidad
+        precipitacionesUnidad: datoPC.precipitacionesUnidad,
+        ubicacion: informacionEstaciones.getUbicacion(pluviometroCodigo)
       };
 
       return datoP;
