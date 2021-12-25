@@ -39,13 +39,13 @@ export interface DatosPluviometricos {
 }
 
 // Establece el tiempo (ms) de validez de los datos antes de que sea necesario actualziarlos
-const tiempoValidezDatos: number = 5 * 60 * 1000; // 5min
+const tiempoValidezDatos: number = 2 * 60 * 1000; // 2min
 let datosPrecipitacionCache: { fecha: Date, datos: DatosPluviometricos[] } | undefined;
 
 export const getPrecipitacionesTR = async (req: Request, res: Response, next: NextFunction) => {
   let datosPrecipitacion: DatosPluviometricos[] = [];
 
-  if (datosPrecipitacionCache && datosPrecipitacionCache.fecha.getTime() < Date.now() + tiempoValidezDatos) {
+  if (datosPrecipitacionCache && Date.now() - datosPrecipitacionCache.fecha.getTime() < tiempoValidezDatos) {
     // Cargar datos cacheados
     datosPrecipitacion = datosPrecipitacionCache.datos;
   } else {
