@@ -20,19 +20,21 @@ export interface DatosPluviometricosCapturados {
 export interface DatosPluviometricos {
   pluviometro: {
     codigo: string;
-    nombre: string;
+    nombreWeb: string;
+    nombrePdf?: string;
   };
   provincia: {
     codigo: string;
     nombre: string;
   };
+  municipio?: string;
   precipitacionesHoraActual: number;
   precipitacionesHoraAnterior: number;
   precipitacionesUltimas12horas: number;
   precipitacionesAcumuladoHoy: number;
   precipitacionesAcumuladoAyer: number;
   precipitacionesUnidad: string;
-  ubicacion?: {
+  coordenadasDecimal?: {
     lat: number;
     lng: number;
   }
@@ -153,22 +155,26 @@ const transformarDatosPluviometricos = (datosPC: DatosPluviometricosCapturados[]
         return false;
       }) || { codigos: ['ER'], nombre: 'ERROR' }; // En caso no tener (XX) y no estar registrado en la lista, entonces muestra ER ERROR
 
+      const infoEstacion = informacionEstaciones.getInfoEstacion(pluviometroCodigo);
+
       const datoP: DatosPluviometricos = {
         pluviometro: {
           codigo: pluviometroCodigo,
-          nombre: pluviometroNombre
+          nombreWeb: pluviometroNombre,
+          nombrePdf: infoEstacion?.estacion.nombre
         },
         provincia: {
           codigo: provinciaNombreCodigo.codigos[0],
           nombre: provinciaNombreCodigo.nombre
         },
+        municipio: infoEstacion?.localizacion.municipio,
         precipitacionesHoraActual: Number(datoPC.precipitacionesHoraActual.replace(',', '.')),
         precipitacionesHoraAnterior: Number(datoPC.precipitacionesHoraAnterior.replace(',', '.')),
         precipitacionesUltimas12horas: Number(datoPC.precipitacionesUltimas12horas.replace(',', '.')),
         precipitacionesAcumuladoHoy: Number(datoPC.precipitacionesAcumuladoHoy.replace(',', '.')),
         precipitacionesAcumuladoAyer: Number(datoPC.precipitacionesAcumuladoAyer.replace(',', '.')),
         precipitacionesUnidad: datoPC.precipitacionesUnidad,
-        ubicacion: informacionEstaciones.getUbicacion(pluviometroCodigo)
+        coordenadasDecimal: infoEstacion?.coordenadasDecimal
       };
 
       return datoP;

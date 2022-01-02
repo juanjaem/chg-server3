@@ -338,13 +338,13 @@ const INFO_ESTACIONES: InfoEstacion[] = [
   { estacion: { codigo: 'S24', nombre: 'Guadalquivir en San Julián' }, localizacion: { provincia: { codigo: 'JA', nombre: 'Jaén' }, municipio: 'Marmolejo' }, coordenadasUTM30S: { x: 397186, y: 4208467 }, coordenadasDecimal: { lat: 38.018068, lng: -4.171305 }, pluviometro: false, termometro: false },
   { estacion: { codigo: 'S25', nombre: 'Guadaira en Alcalá de Guadaira' }, localizacion: { provincia: { codigo: 'SE', nombre: 'Sevilla' }, municipio: 'Alcalá de Guadaíra' }, coordenadasUTM30S: { x: 248755, y: 4134550 }, coordenadasDecimal: { lat: 37.323667, lng: -5.835493 }, pluviometro: false, termometro: false },
   { estacion: { codigo: 'Z04', nombre: 'Doñana I' }, localizacion: { provincia: { codigo: 'HU', nombre: 'Huelva' }, municipio: 'Almonte' }, coordenadasUTM30S: { x: 184461, y: 4101134 }, coordenadasDecimal: { lat: 37.003433, lng: -6.545866 }, pluviometro: false, termometro: false },
-  { estacion: { codigo: 'Z05', nombre: 'Doñana II' }, localizacion: { provincia: { codigo: 'HU', nombre: 'Huelva' }, municipio: 'Almonte' }, coordenadasUTM30S: { x: 184463, y: 4101131 }, coordenadasDecimal: { lat: 37.003406, lng: -6.545842 }, pluviometro: false, termometro: false },
+  { estacion: { codigo: 'Z05', nombre: 'Doñana II' }, localizacion: { provincia: { codigo: 'HU', nombre: 'Huelva' }, municipio: 'Almonte' }, coordenadasUTM30S: { x: 184463, y: 4101131 }, coordenadasDecimal: { lat: 37.003406, lng: -6.545842 }, pluviometro: false, termometro: false }
 ];
 
 export class InformacionEstaciones {
   estacionesConPluviometro: InfoEstacion[] = INFO_ESTACIONES.filter((x) => x.pluviometro)
 
-  public getUbicacion (codigoEstacion: string): {lat: number, lng: number} | undefined {
-    return this.estacionesConPluviometro.find(x => x.estacion.codigo === codigoEstacion)?.coordenadasDecimal;
+  public getInfoEstacion (codigoEstacion: string): InfoEstacion | undefined {
+    return this.estacionesConPluviometro.find(x => x.estacion.codigo === codigoEstacion);
   }
 }
