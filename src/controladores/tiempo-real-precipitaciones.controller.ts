@@ -136,7 +136,10 @@ const transformarDatosPluviometricos = (datosPC: DatosPluviometricosCapturados[]
         pluviometroNombre = pluviometroNombre.slice(1);
       }
       if (pluviometroNombre.slice(-1) === ')') {
-        pluviometroNombre = pluviometroNombre.slice(0, pluviometroNombre.length - 5); // Quitar código provincia si existe. Se supone que tiene el formato (JA)
+        pluviometroNombre = pluviometroNombre.slice(0, pluviometroNombre.length - 4); // Quitar código provincia si existe. Se supone que tiene el formato (JA)
+        while (pluviometroNombre.endsWith(' ')) {
+          pluviometroNombre = pluviometroNombre.slice(0, -1); // Quitar espacios en blanco del final.
+        }
       }
 
       // Calcular código y nombre de provincia
